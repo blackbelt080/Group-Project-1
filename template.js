@@ -6,3 +6,7 @@ var sketchProc = function(processingInstance){
 		//Program Here
 	}
 };
+
+var myFunc = function() {
+	return true;
+}
