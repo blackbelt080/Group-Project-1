@@ -1,12 +1,14 @@
-var sketchProc = function(processingInstance){
-	with (processingInstance){
-		size(400, 400); 
-		frameRate(30);
+var sketchProc = function(processingInstance){ with (processingInstance){
+size(400, 400); 
+frameRate(30);
 
-		//Program Here
-	}
+
+background(0);
+fill(255);
+mouseClicked = function(){
+    text("Hello",100,100);
 };
 
-var myFunc = function() {
-	return true;
-}
+
+
+}};
