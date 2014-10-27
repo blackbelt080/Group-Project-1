@@ -2,11 +2,11 @@ var sketchProc = function(processingInstance){ with (processingInstance){
 size(400, 400); 
 frameRate(30);
 
-// Begin code here XXXXXXXXXXXXXXX
+/* Begin Code */
 
 var page = "Intro";
 
-//A Boolean which prevents you from zipping through more than one level in case the level you are going to also uses button clicks.
+// A Boolean which prevents you from zipping through more than one level in case the level you are going to also uses button clicks.
 var buttonPressed = false;
 var clicked = false;
 
@@ -19,26 +19,26 @@ mouseReleased = function(){
  clicked = false;
 };
 
-var button = function(label,x,y,Width,Height,Color,link){
- pushStyle(); // preserve program settings
-     stroke(0);
-     fill(Color); // button color
-     rect(x, y, Width, Height, 4); // draw button
+var Button = function(label, x, y, Width, Height, Color, link) {
+	pushStyle(); // preserve program settings
+	stroke(0);
+	fill(Color); // button color
+	rect(x, y, Width, Height, 4); // draw button
 
-     fill(255); // button text color
-     textSize(20);
-     textAlign(CENTER,CENTER);
-     text(label, x + Width/2, y + Height/2); // label
- popStyle(); // restore previous program settings
+	fill(255); // button text color
+	textSize(20);
+	textAlign(CENTER,CENTER);
+	text(label, (x + Width / 2), (y + Height / 2)); // label
+	popStyle(); // restore previous program settings
 
-//Collision Detection for Button
- if(clicked && !buttonPressed){
-     if(mouseX > x && mouseX < x + Width &&
-         mouseY > y && mouseY < y + Height){
-         page = link;
-         buttonPressed = true;
-     }
- }
+	//Collision Detection for Button
+	if(clicked && !buttonPressed){
+		if(mouseX > x && mouseX < x + Width &&
+			mouseY > y && mouseY < y + Height){
+			page = link;
+			buttonPressed = true;
+		}
+	}
 };
 
 var teamCodeLogo = function(){
