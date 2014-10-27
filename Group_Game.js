@@ -42,64 +42,63 @@ var Button = function(label, x, y, Width, Height, Color, link) {
 };
 
 var teamCodeLogo = function(){
- noStroke();
- fill(217, 250, 255, 160);
- rect(2,2,55,55);
- fill(0, 100, 255, 160);
- rect(25,5,10,10);
- rect(15,15,10,10);
- rect(35,15,10,10);
- rect(25,25,10,10);
- rect(25,35,10,10);
- rect(15,45,10,10);
- rect(5,45,10,10);
- rect(35,45,10,10);
- rect(45,45,10,10);
+	noStroke();
+	fill(217, 250, 255, 160);
+	rect(2,2,55,55);
+	fill(0, 100, 255, 160);
+	rect(25,5,10,10);
+	rect(15,15,10,10);
+	rect(35,15,10,10);
+	rect(25,25,10,10);
+	rect(25,35,10,10);
+	rect(15,45,10,10);
+	rect(5,45,10,10);
+	rect(35,45,10,10);
+	rect(45,45,10,10);
 };
 
 textAlign(CENTER,0);
 textSize(32);
 
 draw = function() {
+	switch(page){
+		case "Intro": // The Splash Screen of the program
+			background(185, 54, 255);
+			scale(0.5);
+			teamCodeLogo();
+			resetMatrix();
 
-switch(page){
- case "Intro": // The Splash Screen of the program
-     background(185, 54, 255);
-     scale(0.5);
-     teamCodeLogo();
-     resetMatrix();
-     
-     fill(255);
-     text("Team-Code\nGroup Project Game",200,65);
-     button("Start",150,150,100,60,color(255, 0, 0),"main");
-     button("Instructions",140,250,120,60,color(0, 255, 0),"how to");
- break;
- 
- case "main": /* Main Game or Program code goes here */
-     background(136, 89, 255);
-     textAlign(CENTER,CENTER);
-     fill(255);
-     text("WIP", 200, 100);
-     
-     button("Back",150,150,100,60,color(0, 0, 255),"Intro");
- break;
- 
- case "how to": /* When in doubt, read the instructions */
-     background(255, 170, 90);
-     textAlign(CENTER,CENTER);
-     fill(255);
-     text("TBA", 200, 100);
-     
-     button("Back",150,250,100,60,color(0, 0, 255),"Intro");
- break;
+			fill(255);
+			text("Team-Code\nGroup Project Game",200,65);
+			Button("Start",150,150,100,60,color(255, 0, 0),"main");
+			Button("Instructions",140,250,120,60,color(0, 255, 0),"how to");
+		break;
 
- default: // If page === anything else, go here
-     background(0);
-     fill(255, 0, 0);
-     textSize(20);
-     text("Game Over", 200, 150);
- break;
-} // end switch
+		case "main": /* Main Game or Program code goes here */
+			background(136, 89, 255);
+			textAlign(CENTER,CENTER);
+			fill(255);
+			text("WIP", 200, 100);
+
+			Button("Back",150,150,100,60,color(0, 0, 255),"Intro");
+		break;
+
+		case "how to": /* When in doubt, read the instructions */
+			background(255, 170, 90);
+			textAlign(CENTER,CENTER);
+			fill(255);
+			text("TBA", 200, 100);
+
+			Button("Back",150,250,100,60,color(0, 0, 255),"Intro");
+		break;
+
+		default: // If page === anything else, go here
+			background(0);
+			fill(255, 0, 0);
+			textSize(20);
+			text("Game Over", 200, 150);
+		break;
+	} // end switch
 
 };
 
