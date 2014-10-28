@@ -1,0 +1,244 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 6.3.9600}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 /** <Description> Template. </Description> */\par
+\par
+// The Starting State of the Game\par
+var gameState = "Intro";\par
+\par
+var tileSize = 10;\par
+\par
+var bgDefault = color(166, 166, 255); // Default background color\par
+\par
+\par
+var bitmap = [\par
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\par
+[0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0,,0],\par
+[0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0,0,0],\par
+[0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0,0],\par
+[0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0,0],\par
+[0,0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0],\par
+[0,0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0],\par
+[0,0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0],\par
+[0,0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0,0],\par
+[0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0,0],\par
+[0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0,0],\par
+[0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0,0],\par
+[0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0,0],\par
+[0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0],\par
+[0,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,16777215,0],\par
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\par
+];\par
+\par
+var drawMap = function(grid,x,y)\{\par
+noStroke();\par
+    // Draw Tile Map using Nested For Loops\par
+    for (var row = 0; row < 16; row++)\{ \par
+        for (var col = 0; col < 16; col++)\{\par
+// Grab Tile color from 2 Dimensional "grid" Array\par
+        fill(grid[col][row]);\par
+    // Draw Tiles\par
+        rect(row*tileSize+x, col*tileSize+y, tileSize, tileSize);\par
+        \} \par
+    \}\par
+\};\par
+\par
+\par
+var selectColor = 0; // For storing Color Picker Colors\par
+\par
+// Graphics Buffer to store Color Picker Image\par
+var colorPicker = \{\par
+    img: createGraphics(256,272, JAVA2D)\par
+\};\par
+\par
+var showPicker = false;\par
+\par
+var locked = false;\par
+\par
+mouseReleased = function()\{\par
+    locked = false;\par
+\};\par
+\par
+try\{\par
+    colorPicker.img.colorMode(HSB);\par
+colorPicker.img.noStroke();\par
+\par
+// Generate Simulated 8 Bit Color Pallette\par
+for(var j = 0;j < 248;j += 32)\{\par
+   for(var i = 0; i < 248;i += 16)\{\par
+    colorPicker.img.fill(i, j, 255);\par
+    colorPicker.img.rect(i,j/2,16,16);\par
+    \} \par
+\}\par
+for(var j = 0;j<248;j+=32)\{\par
+   for(var i = 0; i < 248;i+=16)\{\par
+    colorPicker.img.fill(i, 255, j);\par
+    colorPicker.img.rect(i,240+(-j/2),16,16);\par
+    \}\par
+\}\par
+for(var l = 0; l < 248;l += 16)\{\par
+    colorPicker.img.fill(0, 0, l);\par
+    colorPicker.img.rect(l,256,16,16);\par
+\}\par
+\}catch(e) \{println(e);\}\par
+\par
+\par
+\par
+keyPressed = 0;\par
+\par
+// Declare Variables used by drawButton Function\par
+var overButton;\par
+var buttonHeight = 22;\par
+var buttonPressed = false; // The button has not been pressed.\par
+\par
+var buttonColor = color(180, 180, 180);\par
+var rolloverColor = color(220, 220, 220);\par
+var buttonFill = buttonColor;\par
+\par
+// Create a reusable Button function\par
+var drawButton = function(buttonText, x, y, length, color)\{\par
+overButton = false; // Mouse over state\par
+    \par
+    // Set fill color to normal\par
+    buttonFill = buttonColor;\par
+\par
+    fill(0, 0, 0, 100); // Drop Shadow using Alpha\par
+    noStroke(); // No border around button Shadow\par
+    rect(x - 2, y + 2, length, buttonHeight + 1, 3);\par
+\par
+// Detect if Mouse is over Button\par
+if(mouseX >= x && mouseX <= x + length && mouseY >= y && mouseY <= y + buttonHeight)\{\par
+    // Set fill color to Rollover color\par
+    buttonFill = rolloverColor;\par
+    overButton = true;\par
+\par
+    if(mouseIsPressed)\{\par
+        x -= 2; // Move Button 2 Pixels if Pressed\par
+        y += 2;\par
+    \}\par
+\}\par
+    strokeWeight(2);\par
+    // Button Outline Color\par
+    stroke(100, 0, 150);\par
+    // Button fill color\par
+    fill(buttonFill);\par
+    rect(x, y, length, buttonHeight, 2);\par
+\par
+    textAlign(CENTER, CENTER);\par
+    fill(0);\par
+    textSize(12);\par
+    text(buttonText, x + length / 2, y + buttonHeight / 2);\par
+\};\par
+\par
+\par
+\par
+// Causes Drawing "Brush" Square to Snap to Grid\par
+var snapToGrid = function(mouseCoord)\{ \par
+    return (floor(mouseCoord/tileSize)*tileSize);\par
+\};\par
+\par
+draw = function()\{\par
+background(bgDefault); // Set Default Background color\par
+\par
+// What is drawn is determined by the Variable gameState\par
+switch(gameState)\{ \par
+\par
+/* X-X-X-X-X-X-X-  THE GAME STARTS HERE  -X-X-X-X-X-X-X */\par
+case "Intro": // In case gameState = "Intro"\par
+\par
+// Begin Splash Screen of Game here\par
+    textAlign(CENTER, CENTER);\par
+    textSize(32);\par
+    fill(0);\par
+    text("Game Editor", 200, 80);\par
+    text("by DillingerLee", 200, 320);\par
+    \par
+    // Draw Cheezy Splash Screen Graphics\par
+    noStroke();\par
+    fill(255);\par
+    ellipse(200,183,20,20); // round thingy\par
+    rect(100, 120, 12, 80); // square thingys\par
+    rect(300, 160, 12, 80);\par
+\par
+// Draw Button 'yourName' at whatever Position you like\par
+    drawButton("Start", 340, 368, 50, 50);\par
+    if(overButton && mouseIsPressed && !buttonPressed)\{\par
+        gameState = 1; // Set which page to go to here\par
+        buttonPressed = true;\par
+    \}\par
+break; // End of Case Statement\par
+\par
+case 1: \par
+textSize(18);\par
+fill(255);\par
+text("To begin we will draw our player.\\n\\nThe image will be 16 X 16 pixels.", 200, 80);\par
+text("Click the grid to select the background color.", 200, 340);\par
+\par
+stroke(0);\par
+strokeWeight(1);\par
+fill(255);\par
+\par
+for (var x = 0; x < 16; x++)\{ \par
+    for (var y = 0; y < 16; y++)\{\par
+        rect(x*tileSize + 120, y*tileSize + 140, tileSize, tileSize);\par
+    \} \par
+\}\par
+if(mouseIsPressed && mouseX > 120 && mouseX < 280 && mouseY > 140 && mouseY < 300)\{\par
+    showPicker = true;\par
+    gameState += 1;\par
+\}\par
+break;\par
+\par
+case 2: \par
+// Level 2 \par
+fill(255);\par
+text("Select colors from the color picker\\nand begin drawing your player.", 200, 30);\par
+\par
+drawMap(bitmap, 120, 80); // Take it for a test drive\par
+\par
+if(mouseX > 120 && mouseX < 280 && mouseY > 80 && mouseY < 240)\{\par
+    noFill();\par
+    stroke(selectColor);\par
+    rect(snapToGrid(mouseX),snapToGrid(mouseY), tileSize, tileSize);\par
+    if(mouseIsPressed && !showPicker && !locked)\{\par
+        bitmap[snapToGrid(mouseY)/10-8][snapToGrid(mouseX)/10-12] = selectColor;\par
+    \}\par
+\}\par
+fill(selectColor);\par
+rect(170,280,60,60);\par
+if(mouseX > 170 && mouseY > 280 && mouseX < 230 && mouseY < 340)\{\par
+    if(mouseIsPressed)\{\par
+        showPicker = true;\par
+    \}\par
+\}\par
+break;\par
+\par
+\par
+default: \par
+background(0, 0, 0);\par
+textSize(48);\par
+text("Game Over",200,200);\par
+break;\par
+\}\par
+\par
+if(showPicker)\{\par
+    background(255);\par
+    image(colorPicker.img, 0, 0);\par
+    stroke(0);\par
+    selectColor = get(mouseX,mouseY);\par
+    fill(selectColor);\par
+    rect(300, 100 ,60, 60);\par
+    if(!locked && mouseIsPressed)\{\par
+        locked = true;\par
+        showPicker = false;\par
+    \}\par
+\}\par
+\par
+\};\par
+\par
+/* Tutorials in plain English by Dillinger \'a9 2014 \par
+All code is owned by its respective author \par
+and made available under an MIT license:\par
+{{\field{\*\fldinst{HYPERLINK http://opensource.org/licenses/mit-license.php }}{\fldrslt{http://opensource.org/licenses/mit-license.php\ul0\cf0}}}}\f0\fs22  */\par
+}
+ 
